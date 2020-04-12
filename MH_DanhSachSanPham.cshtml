@@ -1,0 +1,50 @@
+﻿@using WebApplication13.Entity;
+@using WebApplication13.Business;
+@{
+    Layout = null;
+    List<SanPham> dsSanPham = null;
+    string tuKhoa = string.Empty;
+    if (IsPost)
+    {
+        tuKhoa = Request["tuKhoa"];
+    }
+    dsSanPham = XL_SanPham.DocDanhSach(tuKhoa);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/UI/MH_DanhSachSanPham.cshtml" method="post">
+            Từ khóa: <br />
+            <input type="text" name="tuKhoa" /> <br />
+            <input type="submit" value="Tìm kiếm" />
+        </form>
+        <a href="~/UI/MH_LuuTruSanPham.cshtml"><input type="button" value="Thêm sản phẩm" /></a>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th>Mã sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá sản phẩm</th>
+                <th>Xóa sản phẩm</th>
+            </tr>
+            @foreach (var sp in dsSanPham)
+            {
+                <tr>
+                    <td>@sp.MaSP</td>
+                    <td>@sp.TenSP</td>
+                    <td>@sp.Gia</td>
+                    <td><a href="~/UI/MH_XoaSanPham.cshtml?id=@sp.MaSP">Xóa sản phẩm</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

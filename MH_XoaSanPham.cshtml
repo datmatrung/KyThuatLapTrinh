@@ -1,0 +1,35 @@
+﻿@using WebApplication13.Entity;
+@using WebApplication13.Business;
+@{
+    Layout = null;
+    string chuoi = string.Empty;
+    var masp = Request["id"];
+    if (!string.IsNullOrEmpty(masp))
+    {
+        var isOK = XL_SanPham.XoaSanPham(int.Parse(masp));
+        if (isOK)
+        {
+            chuoi = "Xóa thành công";
+        }
+        else
+        {
+            chuoi = "Không tìm thấy sản phẩm";
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        @Html.Raw(chuoi)
+        <a href="~/UI/MH_DanhSachSanPham.cshtml"><input type="button" value="Quay về" /></a>
+    </div>
+    
+</body>
+</html>
