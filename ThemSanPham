@@ -1,0 +1,17 @@
+  public static void ThemSanPham(SanPham sp)
+        {
+            var ds = DocDanhSach();
+            ds.Add(sp);
+            LuuTruDanhSach(ds);
+        }
+
+  public static void LuuTruDanhSach(List<SanPham> ds)
+        {
+            StreamWriter writer = new StreamWriter("H:\\sanpham.txt");
+            writer.WriteLine(ds.Count);
+            foreach (var sp in ds)
+            {
+                writer.WriteLine($"{sp.MaSP},{sp.TenSP},{sp.Gia}");
+            }
+            writer.Close();
+        }
