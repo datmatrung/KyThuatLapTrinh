@@ -49,21 +49,32 @@ namespace WebApplication13.DAL
             writer.Close();
         }
 
-        public static bool XoaSanPham(int masp)
+        public static void XoaSanPham(int masp)
         {
-            bool kq = false;
             var ds = DocDanhSach();
             foreach (var sp in ds)
             {
                 if (sp.MaSP == masp)
                 {
                     ds.Remove(sp);
-                    kq = true;
                     break;
                 }
             }
             LuuTruDanhSach(ds);
-            return kq;
+        }
+
+        public static void SuaSanPham(SanPham sp)
+        {
+            var ds = DocDanhSach();
+            for (int i = 0; i < ds.Count; i++)
+            {
+                if (ds[i].MaSP == sp.MaSP)
+                {
+                    ds[i] = sp;
+                    break;
+                }
+            }
+            LuuTruDanhSach(ds);
         }
     }
 }

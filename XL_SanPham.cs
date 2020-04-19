@@ -19,9 +19,14 @@ namespace WebApplication13.Business
             LT_SanPham.ThemSanPham(sp);
         }
 
-        public static bool XoaSanPham(int masp)
+        public static void XoaSanPham(int masp)
         {
-            return LT_SanPham.XoaSanPham(masp);
+            LT_SanPham.XoaSanPham(masp);
+        }
+
+        public static void SuaSanPham(SanPham sp)
+        {
+            LT_SanPham.SuaSanPham(sp);
         }
     }
 }
