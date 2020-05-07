@@ -1,0 +1,32 @@
+﻿@using WebApplication9
+@{
+    string chuoi = string.Empty;
+    string dsPhanSo = string.Empty;
+    if (IsPost)
+    {
+        PhanSo[] A;
+        dsPhanSo = Request["dsPhanSo"];
+        A = XL_PhanSo.KhoiTaoMang(dsPhanSo);
+        PhanSo kq = XL_PhanSo.TinhTongMang(A);
+        chuoi = $"Tổng hai phân số là {kq.TuSo} / {kq.MauSo}";
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/MH_MangPhanSo.cshtml" method="post">
+            Nhập danh sách phân số: <br />
+            <input type="text" name="dsPhanSo" value="@dsPhanSo" placeholder="1/2,3/4,5/6"/><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
