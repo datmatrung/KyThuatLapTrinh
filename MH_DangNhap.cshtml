@@ -1,0 +1,48 @@
+﻿@using WebApplication13.Entity
+@using WebApplication13.Business
+@{
+    Layout = null;
+    string Chuoi = string.Empty;
+    if (IsPost)
+    {
+        User u;
+        u.Id = 0;
+        u.Username = Request["username"];
+        u.Password = Request["password"];
+        if (XL_User.dangNhap(u))
+        {
+            Chuoi = "Dang nhap thanh cong";
+            Session["User"] = u;
+            Response.Redirect("~/UI/Default.cshtml");
+        }
+        else
+        {
+            Chuoi = "Dang nhap sai";
+        }
+    }
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h2>Đăng nhập</h2>
+        <form action="" method="post">
+            <p>
+                <label for="text1">Username</label><br>
+                <input type="text" name="username" value="abc">
+            </p>
+            <p>
+                <label for="text2">Password</label><br>
+                <input type="password" name="password" value="123">
+            </p>
+            <p><input type="submit" value="Đăng nhập"></p>
+        </form>
+        @Chuoi
+    </div>
+</body>
+</html>

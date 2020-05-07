@@ -1,0 +1,33 @@
+﻿@using WebApplication13.Entity;
+@using WebApplication13.Business;
+@{
+    Layout = null;
+    if (IsPost)
+    {
+        User user;
+        user.Id = 0;
+        user.Username = Request["username"];
+        user.Password = Request["password"];
+        XL_User.AddUser(user);
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/UI/MH_DangKy_TaiKhoan.cshtml" method="post">
+            <label for="fname">Username:</label><br>
+            <input type="text" name="username" value="John"><br>
+            <label for="lname">Password:</label><br>
+            <input type="password" name="password" value=""><br><br>
+            <input type="submit" value="Dang Ky">
+        </form>
+    </div>
+</body>
+</html>
