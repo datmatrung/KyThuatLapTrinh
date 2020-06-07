@@ -40,3 +40,44 @@
     </div>
 </body>
 </html>
+
+    public struct SanPham
+    {
+        public string Ten;
+        public int Gia;
+        public int Nam;
+    }
+    public class XL_SanPham
+    {
+        public static List<SanPham> DocDanhSach(string tuKhoa = "")
+        {
+            List<SanPham> ds = new List<SanPham>();
+            StreamReader reader = new StreamReader("H:\\sanpham.txt");
+            int N = int.Parse(reader.ReadLine());
+            for (int i = 0; i < N; i++)
+            {
+                string s = reader.ReadLine();
+                var M = s.Split(',');
+                SanPham sp = new SanPham();
+                sp.Ten = M[0];
+                sp.Gia = int.Parse(M[1]);
+                sp.Nam = int.Parse(M[2]);
+                if (sp.Ten.Contains(tuKhoa))
+                {
+                    ds.Add(sp);
+                }
+            }
+            reader.Close();
+            return ds;
+        }
+        public static void LuuTru(List<SanPham> ds)
+        {
+            StreamWriter writer = new StreamWriter("H:\\sanpham.txt");
+            writer.WriteLine(ds.Count);
+            foreach (var sp in ds)
+            {
+                writer.WriteLine($"{sp.Ten},{sp.Gia},{sp.Nam}");
+            }
+            writer.Close();
+        }
+    }
