@@ -1,0 +1,42 @@
+﻿@using WebApplication15
+@{
+    string tuKhoa = string.Empty;
+    if (IsPost)
+    {
+        tuKhoa = Request["tuKhoa"];
+    }
+    List<SanPham> ds = XL_SanPham.DocDanhSach(tuKhoa);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h2>Danh Sách Sản Phẩm</h2>
+        <form action="~/SanPham.cshtml" method="post">
+            <input type="text" name="tuKhoa" value="@tuKhoa" placeholder="Từ khóa" /><br />
+            <input type="submit" value="Tìm kiếm" />       
+        </form>
+        <table border="1">
+            <tr>
+                <th>Tên</th>
+                <th>Giá</th>
+                <th>Năm sản xuất</th>
+            </tr>
+            @foreach (var sp in ds)
+            {
+                <tr>
+                    <td>@sp.Ten</td>
+                    <td>@sp.Gia</td>
+                    <td>@sp.Nam</td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>
