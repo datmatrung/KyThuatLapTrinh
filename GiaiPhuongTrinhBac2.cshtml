@@ -1,4 +1,4 @@
-﻿@using WebApplication15
+@using WebApplication15
 @{
     string chuoi = string.Empty;
     if (IsPost)
@@ -33,3 +33,32 @@
     </div>
 </body>
 </html>
+
+public class GiaiToan
+    {
+        public static string GiaiPhuongTrinhBacHai(int A, int B, int C)
+        {
+            string s = string.Empty;
+            if (A == 0 && B == 0 && C == 0) 
+                s = "Phương trình có vô số nghiệm";
+            else if (A == 0 && B == 0 && C != 0)
+                s = "Phương trình có vô nghiệm";
+            else if (A == 0 && B != 0 && C != 0)
+                s = $"Phương trình có một nghiệm {-C/B}";
+            else if (A == 0 && B != 0 && C != 0)
+                s = $"Phương trình có một nghiệm {-C/B}";
+            else
+            {
+                int Delta = B * B - 4 * A * C;
+                if (Delta < 0)
+                    s = "Phương trình vô nghiệm";
+                else if (Delta == 0)
+                    s = $"Phương trình có nghiệm kép {-B/(2*A)}";
+                else
+                    s = $"Phương trình có hai nghiệm " +
+                        $"{(-B + Math.Sqrt(Delta))/(2*A)} và " +
+                        $"{(-B - Math.Sqrt(Delta))/(2*A)}";
+            }                
+            return s;
+        }
+    }
