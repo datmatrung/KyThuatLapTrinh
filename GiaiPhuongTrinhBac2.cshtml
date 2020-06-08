@@ -6,7 +6,7 @@
         int A = int.Parse(Request["A"]);
         int B = int.Parse(Request["B"]);
         int C = int.Parse(Request["C"]);
-        chuoi = GiaiToan.GiaiPhuongTrinhBacHai(A, B, C);
+        chuoi = XL_BaiToan.GiaiPhuongTrinhBacHai(A, B, C);
     }
 }
 
@@ -20,7 +20,7 @@
 <body>
     <div>
         <h2>Giải phương trình bậc 2: Ax^2 + Bx + C = 0</h2>
-        <form action="~/GiaiPhuongTrinhBac2.cshtml" method="post">
+        <form action="~/ViewPage1.cshtml" method="post">
             Nhập A:<br />
             <input type="text" name="A" value="@Request["A"]" /><br />
             Nhập B:<br />
