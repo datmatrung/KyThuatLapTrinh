@@ -1,0 +1,272 @@
+@using WebApplication15
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        PhanSo A, B;
+        string ps1 = Request["ps1"];
+        string ps2 = Request["ps2"];
+        A = XL_PhanSo.KhoiTao(ps1);
+        B = XL_PhanSo.KhoiTao(ps2);
+        PhanSo kq = XL_PhanSo.TinhTong(A, B);
+        chuoi = XL_PhanSo.Xuat(kq);
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/PhanSo.cshtml" method="post">
+            Nhập phân số thứ nhất: <br />
+            <input type="text" name="ps1" value="@Request["ps1"]" placeholder="1/2"/><br />
+            Nhập phân số thứ hai: <br />
+            <input type="text" name="ps2" value="@Request["ps2"]" placeholder="3/4"/><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+@using WebApplication15
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        PhanSo[] A;
+        string dsPhanSo = Request["dsPhanSo"];
+        A = XL_PhanSo.KhoiTaoMang(dsPhanSo);
+        PhanSo kq = XL_PhanSo.TinhTongMang(A);
+        chuoi = XL_PhanSo.Xuat(kq);
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/MangPhanSo.cshtml" method="post">
+            Nhập danh sách phân số: <br />
+            <input type="text" name="dsPhanSo" value="@Request["dsPhanSo"]" placeholder="1/2,3/4,5/6"/><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+@using WebApplication15
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        Diem A = XL_Diem.KhoiTao(Request["DiemA"]);
+        Diem B = XL_Diem.KhoiTao(Request["DiemB"]);
+        Diem C = XL_Diem.KhoiTao(Request["DiemC"]);
+        TamGiac T = XL_TamGiac.KhoiTao(A, B, C);
+        double kq = XL_TamGiac.TinhChuVi(T);
+        chuoi = $"Chu vi tam giác là {kq}";
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/TamGiac.cshtml" method="post">
+            Nhập điểm A: <br />
+            <input type="text" name="DiemA" value="@Request["DiemA"]" placeholder="1,2" /><br />
+            Nhập điểm B: <br />
+            <input type="text" name="DiemB" value="@Request["DiemB"]" placeholder="3,4" /><br />
+            Nhập điểm C: <br />
+            <input type="text" name="DiemC" value="@Request["DiemC"]" placeholder="5,6" /><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+@using WebApplication15
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        string dsDiem = Request["dsDiem"];
+        DaGiac A = XL_DaGiac.KhoiTao(dsDiem);
+        double kq = XL_DaGiac.TinhChuVi(A);
+        chuoi = $"Chu vi đa giác là {kq}";
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/DaGiac.cshtml" method="post">
+            Nhập danh sách các điểm: <br />
+            <input type="text" name="dsDiem" value="@Request["dsDiem"]" placeholder="1,2|3,4|5,6" /><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+namespace WebApplication15
+{
+    public struct PhanSo
+    {
+        public int TuSo;
+        public int MauSo;
+    }
+    public class XL_PhanSo
+    {
+        public static PhanSo KhoiTao(string s)
+        {
+            var M = s.Split('/');
+            PhanSo P;
+            P.TuSo = int.Parse(M[0]);
+            P.MauSo = int.Parse(M[1]);
+            return P;
+        }
+        public static PhanSo TinhTong(PhanSo A, PhanSo B)
+        {
+            PhanSo P;
+            P.TuSo = A.TuSo * B.MauSo + A.MauSo * B.TuSo;
+            P.MauSo = A.MauSo * B.MauSo;
+            return P;
+        }
+        public static string Xuat(PhanSo P)
+        {
+            return $"{P.TuSo}/{P.MauSo}";
+        }
+        public static PhanSo[] KhoiTaoMang(string s)
+        {
+            var M = s.Split(',');
+            PhanSo[] A = new PhanSo[M.Length];
+            for (int i = 0; i < A.Length; i++)
+            {
+                A[i] = KhoiTao(M[i]);
+            }
+            return A;
+        }
+        public static PhanSo TinhTongMang(PhanSo[] A)
+        {
+            PhanSo P;
+            P.TuSo = 0; P.MauSo = 1;
+            for (int i = 0; i < A.Length; i++)
+            {
+                P = TinhTong(P, A[i]);
+            }
+            return P;
+        }
+    }
+}
+
+namespace WebApplication15
+{
+    public struct Diem
+    {
+        public int X;
+        public int Y;
+    }
+    public class XL_Diem
+    {
+        public static Diem KhoiTao(string s)
+        {
+            Diem kq;
+            var M = s.Split(',');
+            kq.X = int.Parse(M[0]);
+            kq.Y = int.Parse(M[1]);
+            return kq;
+        }
+        public static double TinhKhoangCach(Diem A, Diem B)
+        {
+            return Math.Sqrt(Math.Pow(B.X - A.X, 2) + Math.Pow(B.Y - A.Y, 2));
+        }
+    }
+}
+
+namespace WebApplication15
+{
+    public struct TamGiac
+    {
+        public Diem A;
+        public Diem B;
+        public Diem C;
+    }
+    public class XL_TamGiac
+    {
+        public static TamGiac KhoiTao(Diem A, Diem B, Diem C)
+        {
+            TamGiac kq;
+            kq.A = A;
+            kq.B = B;
+            kq.C = C;
+            return kq;
+        }
+        public static double TinhChuVi(TamGiac T)
+        {
+            double kq = 0;
+            kq += XL_Diem.TinhKhoangCach(T.A, T.B);
+            kq += XL_Diem.TinhKhoangCach(T.A, T.C);
+            kq += XL_Diem.TinhKhoangCach(T.B, T.C);
+            return kq;
+        }
+    }
+}
+
+namespace WebApplication15
+{
+    public struct DaGiac
+    {
+        public Diem[] dsDiem;
+    }
+    public class XL_DaGiac
+    {
+        public static DaGiac KhoiTao(string s)
+        {
+            DaGiac kq;
+            var M = s.Split('|');
+            kq.dsDiem = new Diem[M.Length];
+            for (int i = 0; i < kq.dsDiem.Length; i++)
+            {
+                kq.dsDiem[i] = XL_Diem.KhoiTao(M[i]);
+            }
+            return kq;
+        }
+        public static double TinhChuVi(DaGiac A)
+        {
+            double kq = 0;
+            int N = A.dsDiem.Length;
+            for (int i = 0; i < N - 1; i++)
+            {
+                kq += XL_Diem.TinhKhoangCach(A.dsDiem[i], A.dsDiem[i + 1]);
+            }
+            kq += XL_Diem.TinhKhoangCach(A.dsDiem[0], A.dsDiem[N - 1]);
+            return kq;
+        }
+    }
+}
