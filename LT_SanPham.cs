@@ -31,11 +31,16 @@ namespace WebApplication13.DAL
             return ds;
         }
 
-        public static void ThemSanPham(SanPham sp)
+        public static bool ThemSanPham(SanPham sp)
         {
             var ds = DocDanhSach();
+            if (ds.Count == 0)
+                sp.MaSP = 1;
+            else
+                sp.MaSP = ds.Max(s => s.MaSP) + 1;
             ds.Add(sp);
             LuuTruDanhSach(ds);
+            return true;
         }
 
         public static void LuuTruDanhSach(List<SanPham> ds)
@@ -49,7 +54,7 @@ namespace WebApplication13.DAL
             writer.Close();
         }
 
-        public static void XoaSanPham(int masp)
+        public static bool XoaSanPham(int masp)
         {
             var ds = DocDanhSach();
             foreach (var sp in ds)
@@ -61,9 +66,10 @@ namespace WebApplication13.DAL
                 }
             }
             LuuTruDanhSach(ds);
+            return true;
         }
 
-        public static void SuaSanPham(SanPham sp)
+        public static bool SuaSanPham(SanPham sp)
         {
             var ds = DocDanhSach();
             for (int i = 0; i < ds.Count; i++)
@@ -75,6 +81,7 @@ namespace WebApplication13.DAL
                 }
             }
             LuuTruDanhSach(ds);
+            return true;
         }
     }
 }
