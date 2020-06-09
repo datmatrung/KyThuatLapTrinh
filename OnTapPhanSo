@@ -1,3 +1,4 @@
+// Màn hình phân số
 @using WebApplication15
 @{
     string chuoi = string.Empty;
@@ -12,9 +13,7 @@
         chuoi = XL_PhanSo.Xuat(kq);
     }
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -34,6 +33,7 @@
 </body>
 </html>
 
+// Màn hình mảng phân số
 @using WebApplication15
 @{
     string chuoi = string.Empty;
@@ -46,9 +46,7 @@
         chuoi = XL_PhanSo.Xuat(kq);
     }
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -66,6 +64,7 @@
 </body>
 </html>
 
+// Màn hình tam giác
 @using WebApplication15
 @{
     string chuoi = string.Empty;
@@ -79,9 +78,7 @@
         chuoi = $"Chu vi tam giác là {kq}";
     }
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -103,6 +100,7 @@
 </body>
 </html>
 
+// Màn hình đa giác
 @using WebApplication15
 @{
     string chuoi = string.Empty;
@@ -114,9 +112,7 @@
         chuoi = $"Chu vi đa giác là {kq}";
     }
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -134,6 +130,7 @@
 </body>
 </html>
 
+// Màn hình giải phương trình bậc hai
 @using WebApplication15
 @{
     string chuoi = string.Empty;
@@ -145,9 +142,7 @@
         chuoi = XL_BaiToan.GiaiPhuongTrinhBacHai(A, B, C);
     }
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -170,6 +165,7 @@
 </body>
 </html>
 
+// Xử lý phân số
 namespace WebApplication15
 {
     public struct PhanSo
@@ -221,6 +217,7 @@ namespace WebApplication15
     }
 }
 
+// Xử lý điểm
 namespace WebApplication15
 {
     public struct Diem
@@ -245,6 +242,7 @@ namespace WebApplication15
     }
 }
 
+// Xử lý tam giác
 namespace WebApplication15
 {
     public struct TamGiac
@@ -274,6 +272,7 @@ namespace WebApplication15
     }
 }
 
+// Xử lý đa giác
 namespace WebApplication15
 {
     public struct DaGiac
@@ -307,6 +306,7 @@ namespace WebApplication15
     }
 }
 
+// Xử lý phương trình bậc hai
 namespace WebApplication15
 {
     public class XL_BaiToan
