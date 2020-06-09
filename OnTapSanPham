@@ -1,3 +1,4 @@
+// Màn hình tìm kiếm sản phẩm
 @using WebApplication15
 @{
     string tuKhoa = string.Empty;
@@ -7,9 +8,7 @@
     }
     List<SanPham> dsSanPham = XL_SanPham.DocDanhSach(tuKhoa);
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -43,6 +42,7 @@
 </body>
 </html>
 
+// Màn hình thêm sản phẩm
 @using WebApplication15
 @{
     if (IsPost)
@@ -55,9 +55,7 @@
     }
     List<SanPham> dsSanPham = XL_SanPham.DocDanhSach();
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -93,6 +91,7 @@
 </body>
 </html>
 
+// Màn hình xóa sản phẩm
 @using WebApplication15
 @{
     var masp = Request["id"];
@@ -102,9 +101,7 @@
     }
     List<SanPham> dsSanPham = XL_SanPham.DocDanhSach();
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -140,6 +137,7 @@
 </body>
 </html>
 
+// Màn hình sửa sản phẩm
 @using WebApplication15
 @{
     SanPham s;
@@ -157,9 +155,7 @@
     }
     List<SanPham> dsSanPham = XL_SanPham.DocDanhSach();
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -215,6 +211,7 @@
 </body>
 </html>
 
+// Xử lý sản phẩm
 namespace WebApplication15
 {
     public struct SanPham
@@ -247,6 +244,16 @@ namespace WebApplication15
             reader.Close();
             return ds;
         }
+        public static void LuuTruDanhSach(List<SanPham> ds)
+        {
+            StreamWriter writer = new StreamWriter(filePath);
+            writer.WriteLine(ds.Count);
+            foreach (var sp in ds)
+            {
+                writer.WriteLine($"{sp.MaSP},{sp.TenSP},{sp.Gia}");
+            }
+            writer.Close();
+        }
         public static bool ThemSanPham(SanPham sp)
         {
             var ds = DocDanhSach();
@@ -257,16 +264,6 @@ namespace WebApplication15
             ds.Add(sp);
             LuuTruDanhSach(ds);
             return true;
-        }
-        public static void LuuTruDanhSach(List<SanPham> ds)
-        {
-            StreamWriter writer = new StreamWriter(filePath);
-            writer.WriteLine(ds.Count);
-            foreach (var sp in ds)
-            {
-                writer.WriteLine($"{sp.MaSP},{sp.TenSP},{sp.Gia}");
-            }
-            writer.Close();
         }
         public static bool XoaSanPham(int masp)
         {
