@@ -1,0 +1,314 @@
+@using WebApplication15
+@{
+    string tuKhoa = string.Empty;
+    if (IsPost)
+    {
+        tuKhoa = Request["tuKhoa"];
+    }
+    List<SanPham> dsSanPham = XL_SanPham.DocDanhSach(tuKhoa);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/TimKiem.cshtml" method="post">
+            Keyword: <br />
+            <input type="text" name="tuKhoa" /> <br />
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+    <div>
+        <table border="1">
+            <tr>
+                <th>Mã Sản Phẩm</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Giá Sản Phẩm</th>
+            </tr>
+            @foreach (var sp in dsSanPham)
+            {
+                <tr>
+                    <td>@sp.MaSP</td>
+                    <td>@sp.TenSP</td>
+                    <td>@sp.Gia</td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>
+
+@using WebApplication15
+@{
+    if (IsPost)
+    {
+        SanPham sp;
+        sp.MaSP = 0;
+        sp.TenSP = Request["TenSP"];
+        sp.Gia = int.Parse(Request["Gia"]);
+        XL_SanPham.ThemSanPham(sp);
+    }
+    List<SanPham> dsSanPham = XL_SanPham.DocDanhSach();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/ThemSanPham.cshtml" method="post">
+            Tên Sản Phẩm: <br />
+            <input type="text" name="TenSP" value="@Request["TenSP"]"/> <br />
+            Giá Sản Phẩm: <br />
+            <input type="text" name="Gia" value="@Request["Gia"]"/> <br />
+            <input type="submit" value="Add" />
+        </form>
+    </div>
+    <div>
+        <table border="1">
+            <tr>
+                <th>Mã Sản Phẩm</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Giá Sản Phẩm</th>
+            </tr>
+            @foreach (var sp in dsSanPham)
+            {
+                <tr>
+                    <td>@sp.MaSP</td>
+                    <td>@sp.TenSP</td>
+                    <td>@sp.Gia</td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>
+
+@using WebApplication15
+@{
+    var masp = Request["id"];
+    if (!string.IsNullOrEmpty(masp))
+    {
+        XL_SanPham.XoaSanPham(int.Parse(masp));
+    }
+    List<SanPham> dsSanPham = XL_SanPham.DocDanhSach();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <table border="1">
+            <tr>
+                <th>Mã Sản Phẩm</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Giá Sản Phẩm</th>
+                <th>Xử lý</th>
+            </tr>
+            @foreach (var sp in dsSanPham)
+            {
+                <tr>
+                    <td>@sp.MaSP</td>
+                    <td>@sp.TenSP</td>
+                    <td>@sp.Gia</td>
+                    <td>
+                        <a href="~/XoaSanPham.cshtml?id=@sp.MaSP">
+                            <input type="button" value="Xóa" />
+                        </a>
+                        <a href="~/SuaSanPham.cshtml?id=@sp.MaSP">
+                            <input type="button" value="Sửa" />
+                        </a>
+                    </td>  
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>
+
+@using WebApplication15
+@{
+    SanPham s;
+    if (IsPost)
+    {
+        s.MaSP = int.Parse(Request["MaSP"]);
+        s.TenSP = Request["TenSP"];
+        s.Gia = int.Parse(Request["Gia"]);
+        XL_SanPham.SuaSanPham(s);
+    }
+    else
+    {
+        var masp = int.Parse(Request["id"]);
+        s = XL_SanPham.DocSanPham(masp);
+    }
+    List<SanPham> dsSanPham = XL_SanPham.DocDanhSach();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    @if (s.MaSP != 0)
+    {
+        <div>
+            <form action="~/SuaSanPham.cshtml" method="post">
+                Mã Sản Phẩm: <br />
+                <input type="text" name="MaSP" value="@s.MaSP" readonly /> <br />
+                Tên Sản Phẩm: <br />
+                <input type="text" name="TenSP" value="@s.TenSP" /> <br />
+                Giá Sản Phẩm: <br />
+                <input type="text" name="Gia" value="@s.Gia" /> <br />
+                <input type="submit" value="Update" />
+            </form>
+        </div>
+    }
+    else
+    {
+        <div>
+            @Html.Raw("Không tìm thấy sản phẩm")
+        </div>
+    }
+    <div>
+        <table border="1">
+            <tr>
+                <th>Mã Sản Phẩm</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Giá Sản Phẩm</th>
+                <th>Xử lý</th>
+            </tr>
+            @foreach (var sp in dsSanPham)
+            {
+                <tr>
+                    <td>@sp.MaSP</td>
+                    <td>@sp.TenSP</td>
+                    <td>@sp.Gia</td>
+                    <td>
+                        <a href="~/XoaSanPham.cshtml?id=@sp.MaSP">
+                            <input type="button" value="Xóa" />
+                        </a>
+                        <a href="~/SuaSanPham.cshtml?id=@sp.MaSP">
+                            <input type="button" value="Sửa" />
+                        </a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>
+
+namespace WebApplication15
+{
+    public struct SanPham
+    {
+        public int MaSP;
+        public string TenSP;
+        public int Gia;
+    }
+    public class XL_SanPham
+    {
+        static string filePath = "H:\\sanpham.txt";
+        public static List<SanPham> DocDanhSach(string tuKhoa = "")
+        {
+            List<SanPham> ds = new List<SanPham>();
+            StreamReader reader = new StreamReader(filePath);
+            int N = int.Parse(reader.ReadLine());
+            for (int i = 0; i < N; i++)
+            {
+                string s = reader.ReadLine();
+                var M = s.Split(',');
+                SanPham sp = new SanPham();
+                sp.MaSP = int.Parse(M[0]);
+                sp.TenSP = M[1];
+                sp.Gia = int.Parse(M[2]);
+                if (sp.TenSP.Contains(tuKhoa))
+                {
+                    ds.Add(sp);
+                }
+            }
+            reader.Close();
+            return ds;
+        }
+        public static bool ThemSanPham(SanPham sp)
+        {
+            var ds = DocDanhSach();
+            if (ds.Count == 0)
+                sp.MaSP = 1;
+            else
+                sp.MaSP = ds.Max(s => s.MaSP) + 1;
+            ds.Add(sp);
+            LuuTruDanhSach(ds);
+            return true;
+        }
+        public static void LuuTruDanhSach(List<SanPham> ds)
+        {
+            StreamWriter writer = new StreamWriter(filePath);
+            writer.WriteLine(ds.Count);
+            foreach (var sp in ds)
+            {
+                writer.WriteLine($"{sp.MaSP},{sp.TenSP},{sp.Gia}");
+            }
+            writer.Close();
+        }
+        public static bool XoaSanPham(int masp)
+        {
+            var ds = DocDanhSach();
+            foreach (var sp in ds)
+            {
+                if (sp.MaSP == masp)
+                {
+                    ds.Remove(sp);
+                    break;
+                }
+            }
+            LuuTruDanhSach(ds);
+            return true;
+        }
+        public static bool SuaSanPham(SanPham sp)
+        {
+            var ds = DocDanhSach();
+            for (int i = 0; i < ds.Count; i++)
+            {
+                if (ds[i].MaSP == sp.MaSP)
+                {
+                    ds[i] = sp;
+                    break;
+                }
+            }
+            LuuTruDanhSach(ds);
+            return true;
+        }
+        public static SanPham DocSanPham(int masp)
+        {
+            SanPham kq = new SanPham();
+            var ds = DocDanhSach();
+            foreach (var s in ds)
+            {
+                if (s.MaSP == masp)
+                {
+                    kq = s;
+                    break;
+                }
+            }
+            return kq;
+        }
+    }
+}
