@@ -34,7 +34,7 @@
 </body>
 </html>
 
-public class GiaiToan
+public class XL_BaiToan
     {
         public static string GiaiPhuongTrinhBacHai(int A, int B, int C)
         {
@@ -44,7 +44,7 @@ public class GiaiToan
             else if (A == 0 && B == 0 && C != 0)
                 s = "Phương trình vô nghiệm";
             else if (A == 0 && B != 0 && C != 0)
-                s = $"Phương trình có một nghiệm {-C/B}";
+                s = $"Phương trình có một nghiệm {-(C/B)}";
             else
             {
                 int Delta = B * B - 4 * A * C;
