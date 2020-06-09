@@ -134,6 +134,42 @@
 </body>
 </html>
 
+@using WebApplication15
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        int A = int.Parse(Request["A"]);
+        int B = int.Parse(Request["B"]);
+        int C = int.Parse(Request["C"]);
+        chuoi = XL_BaiToan.GiaiPhuongTrinhBacHai(A, B, C);
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h2>Giải phương trình bậc 2: Ax^2 + Bx + C = 0</h2>
+        <form action="~/BaiToan.cshtml" method="post">
+            Nhập A:<br />
+            <input type="text" name="A" value="@Request["A"]" /><br />
+            Nhập B:<br />
+            <input type="text" name="B" value="@Request["B"]" /><br />
+            Nhập C:<br />
+            <input type="text" name="C" value="@Request["C"]" /><br />
+            <input type="submit" value="Giải" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
 namespace WebApplication15
 {
     public struct PhanSo
@@ -267,6 +303,36 @@ namespace WebApplication15
             }
             kq += XL_Diem.TinhKhoangCach(A.dsDiem[0], A.dsDiem[N - 1]);
             return kq;
+        }
+    }
+}
+
+namespace WebApplication15
+{
+    public class XL_BaiToan
+    {
+        public static string GiaiPhuongTrinhBacHai(int A, int B, int C)
+        {
+            string s = string.Empty;
+            if (A == 0 && B == 0 && C == 0)
+                s = "Phương trình có vô số nghiệm";
+            else if (A == 0 && B == 0 && C != 0)
+                s = "Phương trình vô nghiệm";
+            else if (A == 0 && B != 0 && C != 0)
+                s = $"Phương trình có một nghiệm {-(C / B)}";
+            else
+            {
+                int Delta = B * B - 4 * A * C;
+                if (Delta < 0)
+                    s = "Phương trình vô nghiệm";
+                else if (Delta == 0)
+                    s = $"Phương trình có nghiệm kép {-B / (2 * A)}";
+                else
+                    s = $"Phương trình có hai nghiệm " +
+                        $"{(-B + Math.Sqrt(Delta)) / (2 * A)} và " +
+                        $"{(-B - Math.Sqrt(Delta)) / (2 * A)}";
+            }
+            return s;
         }
     }
 }
