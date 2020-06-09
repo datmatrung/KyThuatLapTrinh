@@ -14,17 +14,17 @@ namespace WebApplication13.Business
             return LT_SanPham.DocDanhSach(tuKhoa);
         }
 
-        public static void ThemSanPham(SanPham sp)
+        public static bool ThemSanPham(SanPham sp)
         {
             LT_SanPham.ThemSanPham(sp);
         }
 
-        public static void XoaSanPham(int masp)
+        public static bool XoaSanPham(int masp)
         {
             LT_SanPham.XoaSanPham(masp);
         }
 
-        public static void SuaSanPham(SanPham sp)
+        public static bool SuaSanPham(SanPham sp)
         {
             LT_SanPham.SuaSanPham(sp);
         }
