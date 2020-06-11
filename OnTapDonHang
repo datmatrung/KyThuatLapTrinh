@@ -70,6 +70,56 @@
 </body>
 </html>
 
+//Màn hình tạo đơn hàng
+@using WebApplication15
+@{
+    List<DonHang> dsDonHang = XL_DonHang.DocDanhSach();
+    List<User> dsKhachHang = XL_User.DocDanhSach();
+    List<SanPham> dsSanPham = XL_SanPham.DocDanhSach();
+    if (IsPost)
+    {
+        DonHang dh;
+        dh.MaDonHang = 0;
+        dh.NgayTao = DateTime.Now;
+        dh.MaKhachHang = int.Parse(Request["user"]);
+        dh.MaSanPham = int.Parse(Request["sp"]);
+        dh.SoLuong = int.Parse(Request["sl"]);
+        XL_DonHang.AddDonHang(dh);
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/DonHang.cshtml" method="post">
+            Ngày tạo: <br />
+            <input type="text" value="@DateTime.Now.ToString()" readonly /> <br />
+            Khách hàng: <br />
+            <select name="user">
+                @foreach (var u in dsKhachHang)
+                {
+                    <option value="@u.Id">@u.Username</option>
+                }
+            </select> <br />
+            Sản phẩm: <br />
+            <select name="sp">
+                @foreach (var s in dsSanPham)
+                {
+                    <option value="@s.MaSP">@s.TenSP</option>
+                }
+            </select> <br />
+            Số lượng: <br />
+            <input type="text" name="sl" /> <br />
+            <input type="submit" value="Add" />
+        </form>
+    </div>
+</body>
+</html>
+
 //Xử lý tài khoản
 namespace WebApplication15
 {
@@ -82,7 +132,7 @@ namespace WebApplication15
     public class XL_User
     {
         static string filePath = "H:\\user.json";
-        public static List<User> LoadUsers()
+        public static List<User> DocDanhSach()
         {
             List<User> ds = new List<User>();
             StreamReader reader = new StreamReader(filePath);
@@ -107,7 +157,7 @@ namespace WebApplication15
             }
             else
             {
-                var ds = LoadUsers();
+                var ds = DocDanhSach();
                 if (ds.Count == 0)
                     user.Id = 1;
                 else
@@ -119,7 +169,7 @@ namespace WebApplication15
         }
         public static bool DangNhap(User u)
         {
-            List<User> ds = LoadUsers();
+            List<User> ds = DocDanhSach();
             bool kq = false;
             foreach (var s in ds)
             {
@@ -130,6 +180,53 @@ namespace WebApplication15
                 }
             }
             return kq;
+        }
+    }
+}
+
+//Xử lý đơn hàng
+namespace WebApplication15
+{
+    public struct DonHang
+    {
+        public int MaDonHang;
+        public DateTime NgayTao;
+        public int MaKhachHang;
+        public int MaSanPham;
+        public int SoLuong;
+    }
+    public class XL_DonHang
+    {
+        static string filePath = "H:\\donhang.json";
+        public static List<DonHang> DocDanhSach()
+        {
+            List<DonHang> ds = new List<DonHang>();
+            StreamReader reader = new StreamReader(filePath);
+            string json = reader.ReadLine();
+            if (!string.IsNullOrEmpty(json))
+                ds = JsonConvert.DeserializeObject<List<DonHang>>(json);
+            reader.Close();
+            return ds;
+        }
+
+        public static bool AddDonHang(DonHang dh)
+        {
+            var ds = DocDanhSach();
+            if (ds.Count == 0)
+                dh.MaDonHang = 1;
+            else
+                dh.MaDonHang = ds.Max(u => u.MaDonHang) + 1;
+            ds.Add(dh);
+            SaveDonHang(ds);
+            return true;
+        }
+
+        public static void SaveDonHang(List<DonHang> ds)
+        {
+            StreamWriter writer = new StreamWriter(filePath);
+            string json = JsonConvert.SerializeObject(ds);
+            writer.WriteLine(json);
+            writer.Close();
         }
     }
 }
