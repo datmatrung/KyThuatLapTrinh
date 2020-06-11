@@ -1,0 +1,135 @@
+//Màn hình tạo tài khoản
+@using WebApplication15
+@{
+    User user;
+    if (IsPost)
+    {
+        user.Id = 0;
+        user.Username = Request["username"];
+        user.Password = Request["password"];
+        XL_User.AddUser(user);
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/TaiKhoan.cshtml" method="post">
+            Username:<br>
+            <input type="text" name="username"><br>
+            Password:<br>
+            <input type="password" name="password"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
+
+//Màn hình đăng nhập
+@using WebApplication15
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        User u;
+        u.Id = 0;
+        u.Username = Request["username"];
+        u.Password = Request["password"];
+        if (XL_User.DangNhap(u))
+        {
+            chuoi = "Đăng nhập thành công";
+        }
+        else
+        {
+            chuoi = "Đăng nhập sai";
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h2>Đăng nhập</h2>
+        <form action="~/DangNhap.cshtml" method="post">
+            Username: <br>
+            <input type="text" name="username"><br>
+            Password:<br>
+            <input type="password" name="password">
+            <input type="submit" value="Login"></p>
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+//Xử lý tài khoản
+namespace WebApplication15
+{
+    public struct User
+    {
+        public int Id;
+        public string Username;
+        public string Password;
+    }
+    public class XL_User
+    {
+        static string filePath = "H:\\user.json";
+        public static List<User> LoadUsers()
+        {
+            List<User> ds = new List<User>();
+            StreamReader reader = new StreamReader(filePath);
+            string json = reader.ReadLine();
+            if (!string.IsNullOrEmpty(json))
+                ds = JsonConvert.DeserializeObject<List<User>>(json);
+            reader.Close();
+            return ds;
+        }
+        public static void SaveUsers(List<User> ds)
+        {
+            StreamWriter writer = new StreamWriter(filePath);
+            string json = JsonConvert.SerializeObject(ds);
+            writer.WriteLine(json);
+            writer.Close();
+        }
+        public static bool AddUser(User user)
+        {
+            if (user.Password.Length < 8)
+            {
+                return false;
+            }
+            else
+            {
+                var ds = LoadUsers();
+                if (ds.Count == 0)
+                    user.Id = 1;
+                else
+                    user.Id = ds.Max(u => u.Id) + 1;
+                ds.Add(user);
+                SaveUsers(ds);
+                return true;
+            }
+        }
+        public static bool DangNhap(User u)
+        {
+            List<User> ds = LoadUsers();
+            bool kq = false;
+            foreach (var s in ds)
+            {
+                if ((s.Password == u.Password) && (s.Username == u.Username))
+                {
+                    kq = true;
+                    break;
+                }
+            }
+            return kq;
+        }
+    }
+}
