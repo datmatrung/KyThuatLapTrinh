@@ -208,7 +208,6 @@ namespace WebApplication15
             reader.Close();
             return ds;
         }
-
         public static bool AddDonHang(DonHang dh)
         {
             var ds = DocDanhSach();
@@ -220,7 +219,6 @@ namespace WebApplication15
             SaveDonHang(ds);
             return true;
         }
-
         public static void SaveDonHang(List<DonHang> ds)
         {
             StreamWriter writer = new StreamWriter(filePath);
