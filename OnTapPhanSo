@@ -101,9 +101,8 @@
     string chuoi = string.Empty;
     if (IsPost)
     {
-        string dsDiem = Request["dsDiem"];
-        DaGiac A = XL_DaGiac.KhoiTao(dsDiem);
-        double kq = XL_DaGiac.TinhChuVi(A);
+        DaGiac D = XL_DaGiac.KhoiTao(Request["dsDiem"]);
+        double kq = XL_DaGiac.TinhChuVi(D);
         chuoi = $"Chu vi đa giác là {kq}";
     }
 }
