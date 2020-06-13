@@ -2,7 +2,9 @@
 @using WebApplication15
 @{
     if (IsPost)
+    {
         string tuKhoa = Request["tuKhoa"];
+    }
     List<SanPham> dsSanPham = XL_SanPham.DocDanhSach(tuKhoa);
 }
 <!DOCTYPE html>
