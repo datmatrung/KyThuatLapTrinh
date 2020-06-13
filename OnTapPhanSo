@@ -36,9 +36,7 @@
     string chuoi = string.Empty;
     if (IsPost)
     {
-        PhanSo[] A;
-        string dsPhanSo = Request["dsPhanSo"];
-        A = XL_PhanSo.KhoiTaoMang(dsPhanSo);
+        PhanSo[] A = XL_PhanSo.KhoiTaoMang(Request["dsPhanSo"]);
         PhanSo kq = XL_PhanSo.TinhTongMang(A);
         chuoi = XL_PhanSo.Xuat(kq);
     }
