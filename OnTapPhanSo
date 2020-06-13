@@ -4,11 +4,8 @@
     string chuoi = string.Empty;
     if (IsPost)
     {
-        PhanSo A, B;
-        string ps1 = Request["ps1"];
-        string ps2 = Request["ps2"];
-        A = XL_PhanSo.KhoiTao(ps1);
-        B = XL_PhanSo.KhoiTao(ps2);
+        PhanSo A = XL_PhanSo.KhoiTao(Request["ps1"]);
+        PhanSo B = XL_PhanSo.KhoiTao(Request["ps2"]);
         PhanSo kq = XL_PhanSo.TinhTong(A, B);
         chuoi = XL_PhanSo.Xuat(kq);
     }
