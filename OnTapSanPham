@@ -1,9 +1,10 @@
 // Màn hình tìm kiếm sản phẩm
 @using WebApplication15
 @{
+    string tuKhoa = string.Empty;
     if (IsPost)
     {
-        string tuKhoa = Request["tuKhoa"];
+        tuKhoa = Request["tuKhoa"];
     }
     List<SanPham> dsSanPham = XL_SanPham.DocDanhSach(tuKhoa);
 }
