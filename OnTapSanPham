@@ -222,7 +222,7 @@ namespace WebApplication15
     }
     public class XL_SanPham
     {
-        static string filePath = "H:\\sanpham.txt";
+        static string filePath = HttpContext.Current.Server.MapPath("~/Data/SanPham.txt");
         public static List<SanPham> DocDanhSach(string tuKhoa = "")
         {
             List<SanPham> ds = new List<SanPham>();
