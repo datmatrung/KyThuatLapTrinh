@@ -197,7 +197,7 @@ namespace WebApplication15
     }
     public class XL_DonHang
     {
-        static string filePath = "H:\\donhang.json";
+        static string filePath = HttpContext.Current.Server.MapPath("~/Data/DonHang.json");
         public static List<DonHang> DocDanhSach()
         {
             List<DonHang> ds = new List<DonHang>();
