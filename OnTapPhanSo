@@ -7,7 +7,7 @@
         PhanSo A = XL_PhanSo.KhoiTao(Request["ps1"]);
         PhanSo B = XL_PhanSo.KhoiTao(Request["ps2"]);
         PhanSo kq = XL_PhanSo.TinhTong(A, B);
-        chuoi = XL_PhanSo.Xuat(kq);
+        chuoi = "Tổng hai phân số là: " + XL_PhanSo.Xuat(kq);
     }
 }
 <!DOCTYPE html>
@@ -29,6 +29,38 @@
     </div>
 </body>
 </html>
+
+// Xử lý phân số
+namespace WebApplication15
+{
+    public struct PhanSo
+    {
+        public int TuSo;
+        public int MauSo;
+    }
+    public class XL_PhanSo
+    {
+        public static PhanSo KhoiTao(string s)
+        {
+            var M = s.Split('/');
+            PhanSo P;
+            P.TuSo = int.Parse(M[0]);
+            P.MauSo = int.Parse(M[1]);
+            return P;
+        }
+        public static PhanSo TinhTong(PhanSo A, PhanSo B)
+        {
+            PhanSo P;
+            P.TuSo = A.TuSo * B.MauSo + A.MauSo * B.TuSo;
+            P.MauSo = A.MauSo * B.MauSo;
+            return P;
+        }
+        public static string Xuat(PhanSo P)
+        {
+            return $"{P.TuSo}/{P.MauSo}";
+        }
+    }
+}
 
 // Màn hình mảng phân số
 @using WebApplication15
@@ -58,6 +90,89 @@
     </div>
 </body>
 </html>
+
+// Xử lý mảng phân số
+namespace WebApplication15
+{
+    public static PhanSo[] KhoiTaoMang(string s)
+        {
+            var M = s.Split(',');
+            PhanSo[] A = new PhanSo[M.Length];
+            for (int i = 0; i < A.Length; i++)
+            {
+                A[i] = KhoiTao(M[i]);
+            }
+            return A;
+        }
+        public static PhanSo TinhTongMang(PhanSo[] A)
+        {
+            PhanSo P;
+            P.TuSo = 0; P.MauSo = 1;
+            for (int i = 0; i < A.Length; i++)
+            {
+                P = TinhTong(P, A[i]);
+            }
+            return P;
+        }
+    }
+}
+
+// Màn hình nhập điểm
+@using WebApplication15
+@{
+    string chuoi = string.Empty;
+    if (IsPost)
+    {
+        Diem A = XL_Diem.KhoiTao(Request["DiemA"]);
+        Diem B = XL_Diem.KhoiTao(Request["DiemB"]);
+        double kq = XL_Diem.TinhKhoangCach(A, B);
+        chuoi = $"Khoảng cách AB là {kq}";
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="~/Diem.cshtml" method="post">
+            Nhập điểm A: <br />
+            <input type="text" name="DiemA" value="@Request["DiemA"]" placeholder="1,2" /><br />
+            Nhập điểm B: <br />
+            <input type="text" name="DiemB" value="@Request["DiemB"]" placeholder="3,4" /><br />
+            <input type="submit" value="Submit" />
+        </form>
+        @Html.Raw(chuoi)
+    </div>
+</body>
+</html>
+
+// Xử lý điểm
+namespace WebApplication15
+{
+    public struct Diem
+    {
+        public int X;
+        public int Y;
+    }
+    public class XL_Diem
+    {
+        public static Diem KhoiTao(string s)
+        {
+            Diem kq;
+            var M = s.Split(',');
+            kq.X = int.Parse(M[0]);
+            kq.Y = int.Parse(M[1]);
+            return kq;
+        }
+        public static double TinhKhoangCach(Diem A, Diem B)
+        {
+            return Math.Sqrt(Math.Pow(A.X - B.X, 2) + Math.Pow(A.Y - B.Y, 2));
+        }
+    }
+}
 
 // Màn hình tam giác
 @using WebApplication15
@@ -95,6 +210,36 @@
 </body>
 </html>
 
+// Xử lý tam giác
+namespace WebApplication15
+{
+    public struct TamGiac
+    {
+        public Diem A;
+        public Diem B;
+        public Diem C;
+    }
+    public class XL_TamGiac
+    {
+        public static TamGiac KhoiTao(Diem A, Diem B, Diem C)
+        {
+            TamGiac kq;
+            kq.A = A;
+            kq.B = B;
+            kq.C = C;
+            return kq;
+        }
+        public static double TinhChuVi(TamGiac T)
+        {
+            double kq = 0;
+            kq += XL_Diem.TinhKhoangCach(T.A, T.B);
+            kq += XL_Diem.TinhKhoangCach(T.A, T.C);
+            kq += XL_Diem.TinhKhoangCach(T.B, T.C);
+            return kq;
+        }
+    }
+}
+
 // Màn hình đa giác
 @using WebApplication15
 @{
@@ -123,6 +268,40 @@
     </div>
 </body>
 </html>
+
+// Xử lý đa giác
+namespace WebApplication15
+{
+    public struct DaGiac
+    {
+        public Diem[] dsDiem;
+    }
+    public class XL_DaGiac
+    {
+        public static DaGiac KhoiTao(string s)
+        {
+            DaGiac kq;
+            var M = s.Split('|');
+            kq.dsDiem = new Diem[M.Length];
+            for (int i = 0; i < kq.dsDiem.Length; i++)
+            {
+                kq.dsDiem[i] = XL_Diem.KhoiTao(M[i]);
+            }
+            return kq;
+        }
+        public static double TinhChuVi(DaGiac A)
+        {
+            double kq = 0;
+            int N = A.dsDiem.Length;
+            for (int i = 0; i < N - 1; i++)
+            {
+                kq += XL_Diem.TinhKhoangCach(A.dsDiem[i], A.dsDiem[i + 1]);
+            }
+            kq += XL_Diem.TinhKhoangCach(A.dsDiem[0], A.dsDiem[N - 1]);
+            return kq;
+        }
+    }
+}
 
 // Màn hình giải phương trình bậc hai
 @using WebApplication15
@@ -158,147 +337,6 @@
     </div>
 </body>
 </html>
-
-// Xử lý phân số
-namespace WebApplication15
-{
-    public struct PhanSo
-    {
-        public int TuSo;
-        public int MauSo;
-    }
-    public class XL_PhanSo
-    {
-        public static PhanSo KhoiTao(string s)
-        {
-            var M = s.Split('/');
-            PhanSo P;
-            P.TuSo = int.Parse(M[0]);
-            P.MauSo = int.Parse(M[1]);
-            return P;
-        }
-        public static PhanSo TinhTong(PhanSo A, PhanSo B)
-        {
-            PhanSo P;
-            P.TuSo = A.TuSo * B.MauSo + A.MauSo * B.TuSo;
-            P.MauSo = A.MauSo * B.MauSo;
-            return P;
-        }
-        public static string Xuat(PhanSo P)
-        {
-            return $"{P.TuSo}/{P.MauSo}";
-        }
-        public static PhanSo[] KhoiTaoMang(string s)
-        {
-            var M = s.Split(',');
-            PhanSo[] A = new PhanSo[M.Length];
-            for (int i = 0; i < A.Length; i++)
-            {
-                A[i] = KhoiTao(M[i]);
-            }
-            return A;
-        }
-        public static PhanSo TinhTongMang(PhanSo[] A)
-        {
-            PhanSo P;
-            P.TuSo = 0; P.MauSo = 1;
-            for (int i = 0; i < A.Length; i++)
-            {
-                P = TinhTong(P, A[i]);
-            }
-            return P;
-        }
-    }
-}
-
-// Xử lý điểm
-namespace WebApplication15
-{
-    public struct Diem
-    {
-        public int X;
-        public int Y;
-    }
-    public class XL_Diem
-    {
-        public static Diem KhoiTao(string s)
-        {
-            Diem kq;
-            var M = s.Split(',');
-            kq.X = int.Parse(M[0]);
-            kq.Y = int.Parse(M[1]);
-            return kq;
-        }
-        public static double TinhKhoangCach(Diem A, Diem B)
-        {
-            return Math.Sqrt(Math.Pow(B.X - A.X, 2) + Math.Pow(B.Y - A.Y, 2));
-        }
-    }
-}
-
-// Xử lý tam giác
-namespace WebApplication15
-{
-    public struct TamGiac
-    {
-        public Diem A;
-        public Diem B;
-        public Diem C;
-    }
-    public class XL_TamGiac
-    {
-        public static TamGiac KhoiTao(Diem A, Diem B, Diem C)
-        {
-            TamGiac kq;
-            kq.A = A;
-            kq.B = B;
-            kq.C = C;
-            return kq;
-        }
-        public static double TinhChuVi(TamGiac T)
-        {
-            double kq = 0;
-            kq += XL_Diem.TinhKhoangCach(T.A, T.B);
-            kq += XL_Diem.TinhKhoangCach(T.A, T.C);
-            kq += XL_Diem.TinhKhoangCach(T.B, T.C);
-            return kq;
-        }
-    }
-}
-
-// Xử lý đa giác
-namespace WebApplication15
-{
-    public struct DaGiac
-    {
-        public Diem[] dsDiem;
-    }
-    public class XL_DaGiac
-    {
-        public static DaGiac KhoiTao(string s)
-        {
-            DaGiac kq;
-            var M = s.Split('|');
-            kq.dsDiem = new Diem[M.Length];
-            for (int i = 0; i < kq.dsDiem.Length; i++)
-            {
-                kq.dsDiem[i] = XL_Diem.KhoiTao(M[i]);
-            }
-            return kq;
-        }
-        public static double TinhChuVi(DaGiac A)
-        {
-            double kq = 0;
-            int N = A.dsDiem.Length;
-            for (int i = 0; i < N - 1; i++)
-            {
-                kq += XL_Diem.TinhKhoangCach(A.dsDiem[i], A.dsDiem[i + 1]);
-            }
-            kq += XL_Diem.TinhKhoangCach(A.dsDiem[0], A.dsDiem[N - 1]);
-            return kq;
-        }
-    }
-}
 
 // Xử lý phương trình bậc hai
 namespace WebApplication15
